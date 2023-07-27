@@ -365,7 +365,8 @@ app.get("/stations/:id/add_automated_reading", async (req, res) =>{
     let query2 = await dbClient.query("SELECT laengengrad, breitengrad FROM wetterstationen WHERE id = $1", [real_id])
     let lat = query2.rows[0].breitengrad;
     let lon = query2.rows[0].laengengrad;
-    https.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}2&appid=${api_key}`, (resp) => {
+    console.log(lat, lon)
+    https.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${api_key}`, (resp) => {
         let data = '';
         // A chunk of data has been received.
         resp.on('data', (chunk) => {
