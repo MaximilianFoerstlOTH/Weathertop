@@ -1,0 +1,78 @@
+extends layout.pug
+block head
+    title Dashboard
+block body
+    h1 Dashboard
+    block 1
+    -var i = 0;
+    while i< length
+        div
+            div(class="d-flex mb-5")
+                div(class="card text-white bg-dark " style="min-width: 15rem;")
+                    div(class="card-body")
+                        h5(class="card-title") #{data[i].wetterstation}
+                        span(class="grade") lat: #{data[i].breitengrad}
+                        span(class="grade") lon: #{data[i].laengengrad}
+                    div(class="card-footer")
+                        a(href="stations/" + i + "/", style="color:#5A91E8;")
+                            i(class="bi bi-folder")
+                        a(href="stations/" + i + "/delete" class="ml-3", style="color:#5A91E8;")
+                            i(class="bi bi-trash3" )
+                div(class="card text-white bg-dark ml-4" style="min-width: 15rem;")
+                    div(class="card-body")
+                        div(class="d-flex")
+                            h5(class="card-title") Wetter
+                        div(class="d-flex justify-content-around mt-4")
+                            h5(class="card-text") #{data[i].wetterbeschreibung}
+                            i(class= data[i].wetter_icon style="font-size: 1.4em;")
+                div(class="card text-white bg-dark ml-4" style="min-width: 15rem;")
+                    div(class="card-body")
+                        div(class="d-flex justify-content-between")
+                            h5(class="card-title") Temperatur
+                            div
+                                i(class="bi bi-thermometer-half text-danger")
+                                br
+                                i(class = data[i].temperaturTrend, style="font-size: 30px;")
+                        p(class="card-text") #{data[i].temperatur} Grad
+                        p(class="card-text") Max: #{data[i].maxtemperatur} Grad
+                        p(class="card-text") Min: #{data[i].mintemperatur} Grad
+                div(class="card text-white bg-dark ml-4" style="min-width: 15rem;")
+                    div(class="card-body")
+                        div(class="d-flex justify-content-between")
+                            h5(class="card-title") Wind
+                            div
+                                i(class="bi bi-wind text-primary")
+                                br
+                                i(class = data[i].windTrend, style="font-size: 30px;")
+                        p(class="card-text") #{data[i].wind} m/s
+                        p(class="card-text") #{data[i].windrichtung_wortlaut}
+                        p(class="card-text") Max: #{data[i].maxwind} m/s
+                        p(class="card-text") Min: #{data[i].minwind} m/s
+
+                div(class="card text-white bg-dark ml-4" style="min-width: 15rem;")
+                    div(class="card-body")
+                        div(class="d-flex justify-content-between")
+                            h5(class="card-title") Luftdruck
+                            div
+                                i(class="bi bi-speedometer2 text-info")
+                                br
+                                i(class = data[i].luftdruckTrend, style="font-size: 30px;")
+                        p(class="card-text") #{data[i].luftdruck} hpa
+                        p(class="card-text") Max: #{data[i].maxdruck} hpa
+                        p(class="card-text") Min: #{data[i].mindruck} hpa
+
+        -i++
+    form(action ="/add" method="post")
+        div(class="row")
+            div(class="col")
+                label(for="neue_wetterstation", class="form-label") Neue Wetterstation
+                input(type="text", class="form-control" id="neue_wetterstation", name="neue_wetterstation")
+            div(class="col")
+                label(for="laengengrad", class="form-label") Längengrad
+                input(type="number", step="0.0001", class="form-control" id="laengengrad", name="laengengrad")
+            div(class="col")
+                label(for="breitengrad", class="form-label") Breitengrad
+                input(type="number", step="0.0001", class="form-control" id="breitengrad", name="breitengrad")
+        p
+        button(type="submit" class="btn btn-primary") Hinzufügen
+        script(src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly" defer)

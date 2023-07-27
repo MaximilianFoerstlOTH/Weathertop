@@ -1,0 +1,19 @@
+extends layout.pug
+
+block head
+    title Weathertop
+
+block body
+    div(class="index_layout")
+        img(src="../images/Weathericons.png", class="img-fluid")
+        if(session === undefined)
+            div
+                form(action="./login", method="post")
+                    label(class="form-label", for="email") Email
+                    input(type="email", name="email", id="email", class="form-control", placeholder="Email eingeben", size="30")
+                    label(class="form-label", for="password") Passwort
+                    input(type="password", name="password", id="password", class="form-control", placeholder="Passwort eingeben", size="30")
+                    br
+                    button(type="submit" class="btn btn-primary") Anmelden
+                if(error)
+                    div(class="alert alert-danger" role="alert") #{error}

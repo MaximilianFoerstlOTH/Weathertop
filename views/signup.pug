@@ -1,0 +1,19 @@
+extends layout.pug
+
+block head
+    title Registrieren
+
+block body
+    form(action ="/signup/new_user" method="post")
+        label(class="form-label", for="email") Email
+        input(type="email", name="email", id="email", class="form-control", placeholder="Email eingeben")
+        label(class="form-label", for="vorname") Vorname
+        input(type="text", name="vorname", id="vorname", class="form-control", placeholder="Vorname eingeben")
+        label(class="form-label", for="nachname") Nachname
+        input(type="text", name="nachname", id="nachname", class="form-control", placeholder="Nachname eingeben")
+        label(class="form-label", for="password") Passwort
+        input(type="password", name="password", id="password", class="form-control", placeholder="Passwort eingeben")
+        p
+        button(type="submit" class="btn btn-primary") Registrieren
+    if(error)
+        div(class="alert alert-danger" role="alert") #{error}

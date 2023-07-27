@@ -1,0 +1,137 @@
+extends layout.pug
+
+block head
+    title Weathertop
+    script(type="text/javascript" src="https://www.gstatic.com/charts/loader.js")
+
+
+block body
+    div(class="mt-4")
+        div(class="d-flex justify-content-between")
+            //div(class="p-2 dashboard_card ")
+            div(class="card text-white bg-dark mb-3" style="min-width: 15rem;")
+                div(class="card-body")
+                    h5(class="card-title") #{dashboard_data.wetterstation}
+                    span(class="grade") lat: #{dashboard_data.breitengrad}
+                    span(class="grade") lon: #{dashboard_data.laengengrad}
+            div(class="card text-white bg-dark mb-3" style="min-width: 15rem;")
+                div(class="card-body")
+                    div(class="d-flex")
+                        h5(class="card-title") Wetter
+                    div(class="d-flex justify-content-around mt-4")
+                        h5(class="card-text") #{dashboard_data.wetterbeschreibung}
+                        i(class= dashboard_data.wetter_icon style="font-size: 1.4em;")
+
+            div(class="card text-white bg-dark mb-3" style="min-width: 15rem;")
+                div(class="card-body")
+                    div(class="d-flex justify-content-between")
+                        h5(class="card-title") Temperatur
+                        div
+                            i(class="bi bi-thermometer-half text-danger")
+                            br
+                            i(class = dashboard_data.temperaturTrend, style="font-size: 30px;")
+                    p(class="card-text") #{dashboard_data.temperatur} Grad
+                    p(class="card-text") Max: #{dashboard_data.maxtemperatur} Grad
+                    p(class="card-text") Min: #{dashboard_data.mintemperatur} Grad
+            div(class="card text-white bg-dark mb-3" style="min-width: 15rem;")
+                div(class="card-body")
+                    div(class="d-flex justify-content-between")
+                        h5(class="card-title") Wind
+                        div
+                            i(class="bi bi-wind text-primary")
+                            br
+                            i(class = dashboard_data.windTrend, style="font-size: 30px;")
+                    p(class="card-text") #{dashboard_data.wind} m/s
+                    p(class="card-text") #{dashboard_data.windrichtung_wortlaut}
+                    p(class="card-text") Max: #{dashboard_data.maxwind} m/s
+                    p(class="card-text") Min: #{dashboard_data.minwind} m/s
+
+            div(class="card text-white bg-dark mb-3" style="min-width: 15rem;")
+                div(class="card-body")
+                    div(class="d-flex justify-content-between")
+                        h5(class="card-title") Luftdruck
+                        div
+                            i(class="bi bi-speedometer2 text-info")
+                            br
+                            i(class = dashboard_data.luftdruckTrend, style="font-size: 30px;")
+                    p(class="card-text") #{dashboard_data.luftdruck} hpa
+                    p(class="card-text") Max: #{dashboard_data.maxluftdruck} hpa
+                    p(class="card-text") Min: #{dashboard_data.minluftdruck} hpa
+
+    script(type="text/javascript").
+        google.charts.load('current', {'packages': ['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var googledata = google.visualization.arrayToDataTable([
+                ['Tag', 'Temperatur (Maximal)', "Windgeschwindigkeit"],
+                ["Morgen", parseFloat("#{chartData[0][0]}"),parseFloat("#{chartData[0][1]}")],
+                ["Übermorgen", parseFloat("#{chartData[1][0]}"), parseFloat("#{chartData[1][1]}")],
+                ["3 Tage", parseFloat("#{chartData[2][0]}"), parseFloat("#{chartData[2][1]}")],
+                ["4 Tage", parseFloat("#{chartData[3][0]}"), parseFloat("#{chartData[3][1]}")],
+                ["5 Tage", parseFloat("#{chartData[4][0]}"), parseFloat("#{chartData[4][1]}")],
+                ["6 Tage", parseFloat("#{chartData[5][0]}"), parseFloat("#{chartData[5][1]}")],
+                ["7 Tage", parseFloat("#{chartData[6][0]}"), parseFloat("#{chartData[6][1]}")]
+            ]);
+
+            var options = {
+                title: 'Weather Trend (1 week)',
+                curveType: 'function',
+                legend: {position: 'bottom'},
+                gridLines: {color: '#333', minSpacing: 20}
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+            chart.draw(googledata, options);
+        }
+    div(id="curve_chart")
+
+
+    table(class="table")
+        thead
+            tr
+                th Zeitpunkt
+                th Wetter
+                th Temperatur
+                th Wind
+                th Luftdruck
+
+        -var i = 0;
+        while i < length
+            tbody
+                tr
+                    td #{data[i].zeitpunkt}
+                    td #{data[i].wetter}
+                    td #{data[i].temperatur}
+                    td #{data[i].wind}
+                    td #{data[i].luftdruck}
+                    td
+                        a(href="./remove_reading/"+i)
+                            i(class="bi bi-x-circle")
+            -i++
+
+
+    form(action ="./add_reading" method="post")
+        div(class="row")
+            div(class="col")
+                label(for="wetter", class="form-label") Wetter
+                input(type="number", class="form-control" id="wetter", name="wetter")
+            div(class="col")
+                label(for="temperatur", class="form-label") Temperatur
+                input(type="number", step ="any", class="form-control" id="temperatur", name="temperatur")
+            div(class="col")
+                label(for="wind", class="form-label") Wind
+                input(type="number", step = "any", class="form-control" id="wind", name="wind")
+            div(class="col")
+                label(for="windrichtung", class="form-label") Windrichtung
+                input(type="number", class="form-control" id="windrichtung", name="windrichtung")
+            div(class="col")
+                label(for="luftdruck", class="form-label") Luftdruck
+                input(type="number", class="form-control" id="luftdruck", name="luftdruck")
+        p
+        button(type="submit" class="btn btn-primary") Hinzufügen
+
+        if(error.length !== 0)
+            div(class="alert alert-danger" role="alert") #{error}
+
+    input(type = "button" onclick="location.href='./add_automated_reading'" value="Automatische Messung hinzufügen" class="btn btn-success mt-3")

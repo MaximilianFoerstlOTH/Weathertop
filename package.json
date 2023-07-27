@@ -1,0 +1,34 @@
+{
+  "name": "mi_weathertop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "alert": "^5.0.11",
+    "axios": "^0.21.1",
+    "billboard.js": "^3.4.1",
+    "body-parser": "^1.20.0",
+    "bootstrap": "^5.1.3",
+    "dotenv": "^9.0.2",
+    "express": "^4.18.1",
+    "express-flash-message": "^2.1.0",
+    "express-session": "^1.17.1",
+    "flash": "^1.1.0",
+    "highcharts": "^10.1.0",
+    "highcharts-export-server": "^2.1.0",
+    "highcharts-node": "^0.0.7",
+    "https": "^1.0.0",
+    "iquery": "^0.0.2",
+    "node": "^18.4.0",
+    "pg": "^8.7.3",
+    "pug": "^3.0.2",
+    "querystring": "^0.2.1",
+    "session": "^0.1.0",
+    "sessions": "^0.0.2-7"
+  }
+}
